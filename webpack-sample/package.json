@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "webpack": "^1.13.2"
+  },
+  "scripts": {
+    "start": "webpack"
+  },
+  "name": "webpack",
+  "version": "1.0.0",
+  "description": "a sample of webpack",
+  "main": "index.js",
+  "author": "Alvin",
+  "license": "MIT"
+}
