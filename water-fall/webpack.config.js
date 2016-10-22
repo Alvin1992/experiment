@@ -17,11 +17,16 @@ module.exports = {
             {
                 test: /\.css$/,
                 loaders: ['style', 'css']
+            },
+            {
+                test: /\.(png)|(jpg)$/,
+                loader: 'url?limit=50000'
             }
         ]
     },
     devServer: {
         contentBase: './dist',
+        port: 8081,
         colors: true,
         inline: true,
         historyApiFallback: true
