@@ -2,10 +2,13 @@
  * Created by alvin on 10/20/16.
  */
 module.exports = {
-    entry: __dirname + '/src/main.js',
+    entry: {
+        "main": './src/main.js',
+        "css-mode": './src/css-mode.js'
+    },
     output: {
         path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     devtool: 'source-map',
     module: {

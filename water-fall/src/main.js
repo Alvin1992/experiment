@@ -7,9 +7,7 @@ window.addEventListener('load', function () {
     waterFall('container', 'box');
     window.addEventListener('scroll', function () {
         if (checkLoadStatus('container', 'box')) {
-            var container = document.getElementById('container');
-            container.innerHTML += loadMore(json);
-            waterFall('container', 'box');
+            loadMore();
         }
     }, false);
 }, false);
@@ -55,19 +53,29 @@ function checkLoadStatus(parent, box) {
     // 获取滚动的距离加上屏幕的高度
     var scroll = document.body.scrollTop || document.documentElement.scrollTop;
     var viewHeight =  document.body.clientHeight || document.documentElement.clientHeight;
-    console.log('t', totalH);
-    console.log('h', scroll+viewHeight);
     return (totalH < scroll+viewHeight)
 }
 
 // 加载更多
-function loadMore(obj) {
-    var itemArr = obj.items;
-    var str = '';
-    for (var i = 0; i < itemArr.length; i++) {
-        str += '<div class="box">\
+function loadMore() {
+    var elem = document.querySelector('#load');
+    if (elem) {return}
+    var script = document.createElement('script');
+    script.id = 'load';
+    script.src = 'https://api.flickr.com/services/feeds/photos_public.gne?tags=girl&format=json';
+    document.body.appendChild(script);
+    script.addEventListener('load', function () {
+        var itemArr = json.items;
+        var str = '';
+        for (var i = 0; i < itemArr.length; i++) {
+            str += '<div class="box">\
             <div class="pic"><img src="'+ itemArr[i].media.m +'" alt=""></div>\
             </div>';
-    }
-    return str;
+        }
+        var container = document.getElementById('container');
+        container.innerHTML += str;
+        waterFall('container', 'box');
+        document.body.removeChild(script);
+    }, false);
+
 }
