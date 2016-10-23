@@ -53,44 +53,36 @@
 </div>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-    /*
-     function waterFall(){
-     var nodeWidth = $('.item').outerWidth(true),
-     colNum = Math.floor($(window).width()/nodeWidth),
-     colSumHeight = [];
+    function waterFall() {
+        var nodeWidth = $('.item').outerWidth(true),
+                colNum = Math.floor($(window).width() / nodeWidth),
+                colSumHeight = [];
 
-     for(var i=0;i<colNum;i++){
-     colSumHeight.push(0)		// 先推入项数
-     }
+        for (var i = 0; i < colNum; i++) {
+            colSumHeight.push(0);		// 先推入项数
+        }
 
-     $('.item').each(function(){	// 遍历数组，比较出最小值
-     var $cur = $(this)      //colSumHeight = [200,250,80,300]
-     var idx = 0,
-     minSumHeight = colSumHeight[0];		// 先定义数组第一项为最小的高度，然后遍历和它作比较
-     for(var i=0;i<colSumHeight.length;i++){
-     if(colSumHeight[i]<minSumHeight){
-     idx = i
-     minSumHeight = colSumHeight[i]
-     }
-     }
+        $('.item').each(function () {
+            var $cur = $(this);
+            var minSumHeight = Math.min.apply(null, colSumHeight);
+            var idx = colSumHeight.indexOf(minSumHeight);
 
-     $cur.css({
-     left:nodeWidth*idx,
-     top:minSumHeight
-     })
-     colSumHeight[idx]= $cur.outerHeight(true)+colSumHeight[idx]
-     })
-     }
+            $cur.css({
+                left: nodeWidth * idx,
+                top: minSumHeight
+            });
+            colSumHeight[idx] = $cur.outerHeight(true) + colSumHeight[idx]
+        })
+    }
 
-     waterFall()
-     $(window).on('resize',function(){
-     waterFall()
-     })
+    waterFall();
+    $(window).on('resize', function () {
+        waterFall()
+    });
 
-     */
     // 方法二，封装对象
 
-    var waterFall = {
+    /*var waterFall = {
         colSumHeight: [],
 
         init: function($ct){
@@ -145,7 +137,7 @@
         }
     }
 
-    waterFall.init($('.content'))
+    waterFall.init($('.content'))*/
 </script>
 </body>
 </html>
