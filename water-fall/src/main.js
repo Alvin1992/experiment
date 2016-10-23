@@ -10,6 +10,9 @@ window.addEventListener('load', function () {
             loadMore();
         }
     }, false);
+    window.addEventListener('resize', function () {
+        waterFall('container', 'box');
+    }, false);
 }, false);
 
 // 获取元素也可以使用querySelect的API
@@ -24,20 +27,18 @@ function waterFall(parent, box) {
     var columns = Math.floor(totalWidth / boxWidth);
     // 设置父元素的宽度，并且居中
     oParent.style.cssText = 'width:' + boxWidth*columns + 'px;margin:0 auto;';
-    // 将第二排之后的每个盒子放在前面一排最低的地方
+    // 将下一排之后的每个盒子放在前面一排最低的地方
     var heightContainer = [];
+    for (var k = 0; k < columns; k++) {
+        heightContainer.push(0);
+    }
+
     for (var i = 0, len = boxes.length; i < len; i++) {
-        if (i < columns) {
-            heightContainer.push(boxes[i].offsetHeight);
-        } else {
-            var minHeight = Math.min.apply(null, heightContainer);
-            var index = heightContainer.indexOf(minHeight);
-            boxes[i].style.position = 'absolute';
-            boxes[i].style.top = minHeight + 'px';
-            // boxes[i].style.left = boxWidth * index + 'px'; // 通过计算左边的距离来设置下一个的left
-            boxes[i].style.left = boxes[index].offsetLeft + 'px'; // 下一个box的left应该和它对应的box的左边距一样
-            heightContainer[index] += boxes[i].offsetHeight;
-        }
+        var minHeight = Math.min.apply(null, heightContainer);
+        var index = heightContainer.indexOf(minHeight);
+        boxes[i].style.top = minHeight + 'px';
+        boxes[i].style.left = boxWidth * index + 'px'; // 通过计算左边的距离来设置下一个的left
+        heightContainer[index] += boxes[i].offsetHeight;
     }
 
 }
@@ -67,14 +68,24 @@ function loadMore() {
     script.addEventListener('load', function () {
         var itemArr = json.items;
         var str = '';
+        var randomNum = Math.floor(Math.random()*999999);
         for (var i = 0; i < itemArr.length; i++) {
             str += '<div class="box">\
-            <div class="pic"><img src="'+ itemArr[i].media.m +'" alt=""></div>\
+            <div class="pic"><img class="tag'+ randomNum +'" src="'+ itemArr[i].media.m +'" alt=""></div>\
             </div>';
         }
-        var container = document.getElementById('container');
+        var container = document.querySelector('#container');
         container.innerHTML += str;
-        waterFall('container', 'box');
+        var count = 0;
+        var pics = document.querySelectorAll('.tag'+randomNum);
+        for (var k = 0;k < pics.length; k++) {
+            pics[k].addEventListener('load', function () {
+                count++;
+                if (count == itemArr.length) {
+                    waterFall('container', 'box');
+                }
+            }, false);
+        }
         document.body.removeChild(script);
     }, false);
 
