@@ -1,0 +1,11 @@
+{
+  "name": "express-sample",
+  "version": "1.0.0",
+  "description": "learn express",
+  "main": "index.js",
+  "author": "Alvin",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
