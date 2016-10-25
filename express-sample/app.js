@@ -123,10 +123,10 @@ app.get('/arr', function (req, res) {
 
 // 当参数为一个Number时，并且没有上面提到的任何一条在响应体里，Express会帮你设置一个响应体
 app.get('/succ', function (req, res) {
-    res.send(200);  // OK
+    res.sendStatus(200);  // OK
 });
 app.get('/server', function (req, res) {
-    res.send(500);  //Internal Server Error
+    res.sendStatus(500);  //Internal Server Error
 });
 app.get('*', function (req, res) {
     res.send(404); // Not Found
