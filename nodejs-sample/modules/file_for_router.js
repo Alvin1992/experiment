@@ -5,13 +5,23 @@
 var fs = require('fs');
 
 module.exports = {
-    async: function (path, callback, res) {
+    asyncRead: function (path, callback) {
         fs.readFile(path, function (err, data) {
             if (err) {
                 console.log(err);
                 return
             }
-            callback(data, res);
+            callback(data);
+        })
+    },
+    readImg: function (path, res) {
+        fs.readFile(path, 'binary', function (err, filedata) {
+            if (err) {
+                console.log(err);
+                return
+            }
+            res.write(filedata, 'binary');
+            res.end();
         })
     }
 };

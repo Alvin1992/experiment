@@ -4,16 +4,30 @@
 
 var fileRouter = require('./file_for_router');
 
-function callback(data, res) {
-    res.write(data);
-    res.end();
+function getCallback(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    function callback(data) {
+        res.write(data);
+        res.end();
+    }
+    return callback;
 }
 
 module.exports = {
     login: function (req, res) {
-        fileRouter.async('./views/login.html', callback, res);
+        var callback = getCallback(req, res);
+        fileRouter.asyncRead('./views/login.html', callback);
     },
     register: function (req, res) {
-        fileRouter.async('./views/register.html', callback, res);
+        var callback = getCallback(req, res);
+        fileRouter.asyncRead('./views/register.html', callback);
+    },
+    completeHtml: function (req, res) {
+        var callback = getCallback(req, res);
+        fileRouter.asyncRead('./views/completeHtml.html', callback);
+    },
+    showImg: function (req, res) {
+        res.writeHead(200, {'Content-Type': 'image/jpeg'});
+        fileRouter.readImg('./images/4.png', res);
     }
 };
