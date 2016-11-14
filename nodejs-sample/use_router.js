@@ -8,7 +8,7 @@ var url = require('url');
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html; charset-utf-8'});
-    if (req.url !== 'favicon.ico') {
+    if (req.url !== '/favicon.ico') {
         var pathname = url.parse(req.url).pathname;
         pathname = pathname.replace(/\//, '');
         if (pathname === 'login' || pathname === 'register') {

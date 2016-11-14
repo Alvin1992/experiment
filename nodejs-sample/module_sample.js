@@ -8,7 +8,7 @@ var http = require('http');
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-    if (req.url !== 'favicon.ico') {
+    if (req.url !== '/favicon.ico') {
         var aStuff = new Stuff(0, 'Alvin', 24);
         aStuff.showSelf(res);
         var aTeacher = new Teacher(1, 'Kathy', 23);

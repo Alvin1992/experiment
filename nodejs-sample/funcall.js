@@ -7,7 +7,7 @@ var func = require('./modules/module_func');
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'});
-    if (req.url !== "favicon.ico") {
+    if (req.url !== "/favicon.ico") {
         foo(res);
         func.bar(res);
         func.foobar(res);
