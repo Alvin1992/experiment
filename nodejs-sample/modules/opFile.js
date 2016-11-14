@@ -10,12 +10,13 @@ module.exports = {
         console.log(data);
         console.log('read file sync');
     },
-    async: function (path) {
+    async: function (path, callback) {
         fs.readFile(path, function (err, data) {
             if (err) {
                 console.log(err);
+                return
             }
-            console.log(data);
+            callback(data);
             console.log('read file async');
         })
     }
