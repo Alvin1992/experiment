@@ -9,6 +9,7 @@ module.exports = {
         fs.readFile(path, function (err, data) {
             if (err) {
                 console.log(err);
+                callback('文件不存在');
                 return
             }
             callback(data);
