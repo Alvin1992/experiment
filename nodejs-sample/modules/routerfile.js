@@ -54,5 +54,25 @@ module.exports = {
     submitForm: function (req, res) {
         var callback = getCallback(req, res);
         fileRouter.asyncRead('./views/submitForm.html', callback);
+    },
+    dynamicHtml: function (req, res) {
+        var post = '';
+        req.on('data', function (chunk) {
+            post += chunk;
+        });
+        req.on('end', function () {
+            post = querystring.parse(post);
+            var arr = ['email', 'pwd'];
+            function callback(data) {
+                var dataStr = data.toString();
+                for (var i = 0; i < arr.length; i++) {
+                    var re = new RegExp('{' + arr[i] + '}', 'g');
+                    dataStr = dataStr.replace(re, post[arr[i]]);
+                }
+                res.write(dataStr);
+                res.end();
+            }
+            fileRouter.asyncRead('./views/dynamicHtml.html', callback);
+        });
     }
 };
