@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加和查询用户</title>
+    <style>
+        .userList {
+            width: 100%;
+            height: 600px;
+        }
+        .userList + p {
+            background-color: #ffffff;
+            text-align: center;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="register">
+        <p>
+            <label for="name">用户名</label>
+            <input type="text" id="name">
+        </p>
+        <p>
+            <label for="pwd">密码</label>
+            <input type="password" id="pwd">
+        </p>
+        <p>
+            <button id="submit">提交</button>
+        </p>
+    </div>
+
+    <div style="margin-top: 20px;background-color: lime; width: 200px;border: 1px solid red;">
+        <div class="userList"></div>
+        <p>
+            <button id="getUserList">获取用户列表</button>
+        </p>
+    </div>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $('#submit').click(function () {
+            var name = $('#name').val();
+            var pwd = $('#pwd').val();
+            $.post('/test_register', {
+                name: name,
+                pwd: pwd
+            }, function (data) {
+                if (data == '0') {
+                    alert('注册失败');
+                } else {
+                    alert('注册成功');
+                }
+            })
+        });
+
+        $('#getUserList').click(function () {
+            $.get('/test_search', function (data) {
+                if (data) {
+                    var str = '';
+                    for (var i = 0; i < data.length; i++) {
+                        str += '<p>用户id: '+ data[i].uid +'；用户名：'+ data[i].uname +'</p>';
+                    }
+                    $('.userList').html(str);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
