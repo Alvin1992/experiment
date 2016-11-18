@@ -1,0 +1,47 @@
+doctype html
+<!--[if IE 8]><html class='ie9><![endif]-->
+<!--[if !IE><!--><html><!--<![endif]-->
+head
+    meta(charset='utf-8')
+    title learn jade
+body
+    h1 jade study
+    p -P可以编译出不压缩的HTML文件，默认是压缩过的，-w可以实时编译
+    div.class#id 添加class, id和emmet是一样的
+    .test 只有class或者ID默认编译成div
+    p.foo(id='bar', class='foobar') 属性放到括号里面
+    a(href='http://www.baidu.com', title='baidu') baidu
+    input(name='course', value='jade', type='text')
+    input(type='checkbox', checked)
+    p
+        | 1. 换行的第一种形式用竖线
+        | 2. b
+        | 3. c
+    p.
+        1. dslkfhdkjghkdfjghfkhgfkhgjkhghhh
+        2. 第二种在p后面加个.然后就不用写竖线了
+    p.
+        1. aaaa<strong>123</strong>
+        2. 如果是用带点的形式换行内嵌的标签就需要写完整
+        3. c <span>6666</span>
+    p
+        | 1. aaa
+        | 2. 如果不是带点的换行，可以用jade的语法来写但是需要换行
+        strong 11
+        | 3. ccc
+        span 666
+    p
+        | This is a paragraph contains a
+        strong strong
+        | and This is end
+    h2 注释
+    h3 单行注释
+    // 这是注释
+    h3 非缓冲注释
+    //- 这也是注释
+    h3 块注释
+    //-
+        p This is a paragraph
+            span lalalal
+    div.foobar Yeah!
+</html>

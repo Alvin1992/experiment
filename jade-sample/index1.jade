@@ -1,0 +1,102 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title learn jade
+    body
+        h2 声明变量
+        - var course = 'jade'
+        p #{course.toUpperCase()} 很少在页面中定义一般是后台传来
+
+        h2 转义
+        - var data = 'text'
+        - var htmlData = '<script>alert(1)</script><span>test</span>'
+        p #{data}
+        p #{htmlData}
+        p !{htmlData}
+        p= data
+        p= htmlData
+        p!= htmlData
+        p \!{htmlData}
+        p \#{data}
+        input(type='#{newData}')
+        input(type=newData)
+        h2 for
+        - var obj = {courses: 'jade', level: 'high'}
+        - for (var k in obj)
+            p= obj[k]
+        h2 each
+        - each value, key in obj
+            p #{key}: #{value}
+        - var courseList = ['node', 'express', 'jade']
+        - each item in courseList
+            p= item
+        h2 while
+        - var n = 0
+        ul
+            while n < 4
+                li= n++
+        h2 if else
+        - var flag = true
+        - var lessons = ['jade', 'node']
+        if lessons
+            if lessons.length > 2
+                p #{lessons.join(', ')}
+            else if lessons.length > 1
+                p #{lessons.join('#')}
+            else
+                p no lesson
+        else
+            p no lesson
+        h2 unless
+        unless !flag
+            p #{lessons.length}
+        h2 case
+        - var name = 'jade'
+        case name
+            when 'java'
+                p Hi java
+            when 'node'
+                p Hi node
+            when 'jade'
+                p Hi Jade
+            default
+                p Hi #{name}
+        h2 mixin
+        mixin lesson
+            p Hello World
+
+        +lesson
+        h2 带参数
+        mixin study(name, list)
+            p #{name}
+            ul.courseList
+                each item in list
+                    li= item
+        +study('Alvin', ['jade', 'express', 'node'])
+        h2 mixin嵌套
+        mixin group(student)
+            h4 #{student.age}
+            +study(student.name, student.course)
+        +group({age: 24, name: 'Alvin', course: ['jade', 'express', 'node']})
+        h2 mixin内联代码块
+        mixin team(slogon)
+            h4 #{slogon}
+            if block
+                block
+            else
+                p no team
+        +team('好好学习，天天向上')
+            p Good job
+        h2 mixin 传递属性
+        mixin attr(name)
+            p(class!=attributes.class) #{name}
+        +attr('Alvin')(class='cool')
+        mixin attrs(name)
+            p&attributes(attributes) #{name}
+        +attrs('Alvin')(class='cool', id='foobar')
+        mixin magic(name, ...items)
+            ul(class='#{name}')
+                each item in items
+                    li= item
+        +magic('foobar', 'node', 'jade', '..')
