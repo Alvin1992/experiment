@@ -1,19 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>vuejs start up</title>
     <script src="vue.js"></script>
 </head>
 <body>
+    <!-- 声明式渲染 -->
     <div id="app">
         {{ message }}
+    </div>
+
+    <!-- 指令开始 -->
+    <!-- 属性 -->
+    <div id="app-2">
+        <span v-bind:title="message">
+            鼠标停留在此处以查看动态绑定的标题
+        </span>
+    </div>
+
+    <!-- 条件 -->
+    <div id="app-3">
+        <p v-if="seen">你可以看到了</p>
+    </div>
+
+    <!-- 循环 -->
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ol>
+    </div>
+
+    <!-- 监听事件 -->
+    <div id="app-5">
+        <p>{{message}}</p>
+        <button v-on:click="reverseMessage">反转文本</button>
+    </div>
+    
+    <!-- 双向数据绑定 -->
+    <div id="app-6">
+        <p>{{message}}</p>
+        <input type="text" v-model="message">
+    </div>
+    <!-- 指令结束 -->
+
+    <!-- 组件 -->
+    <div id="app-7">
+        <ol>
+            <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+        </ol>
     </div>
     <script>
         var app = new Vue({
             el: '#app',
             data: {
                 message: 'Hello World'
+            }
+        });
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: '页面在' + new Date() + '加载了'
+            }
+        });
+        var app3 = new Vue({
+            el: '#app-3',
+            data: {
+                seen: true
+            }
+        });
+        var app4 = new Vue({
+            el: '#app-4',
+            data: {
+                todos: [
+                    {text: '1'},
+                    {text: '2'},
+                    {text: '3'}
+                ]
+            }
+        });
+        var app5 = new Vue({
+            el: '#app-5',
+            data: {
+                message: 'Hello Vue.js'
+            },
+            methods: {
+                reverseMessage: function () {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        });
+        var app6 = new Vue({
+            el: '#app-6',
+            data: {
+                message: 'Hello World'
+            }
+        });
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{todo.text}}</li>'
+        });
+        var app7 = new Vue({
+            el: '#app-7',
+            data: {
+                groceryList: [
+                    {text: 'banana'},
+                    {text: 'apple'},
+                    {text: 'pear'},
+                    {text: 'orange'}
+                ]
             }
         });
     </script>
