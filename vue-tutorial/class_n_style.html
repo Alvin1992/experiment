@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>class and style</title>
+    <style>
+        .active {
+            color: red;
+        }
+        .static {
+            border: 1px solid lime;
+        }
+    </style>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p :class="{ active: isActive }">这是一个段落</p>
+        <p class="static" :class="{ active: isActive, 'text-danger': hasError }">
+            这也是一个段落，嘿嘿嘿
+        </p>
+        <p :class="classObject">这个地方的类使用的是数据里的对象</p>
+        <p :class="classObject1">这个地方的类使用的是计算属性</p>
+        <p :class="[activeClass, errorClass]">使用数组</p>
+        <p :class="[isActive ? activeClass : '', errorClass]">数组结合三元表达式</p>
+        <p :class="[{active: isActive}, errorClass]">数组结合对象语法</p>
+        <p :style="{color: activeColor, fontSize: fontSize + 'px'}">
+            可以使用驼峰式或者短横分割
+        </p>
+        <p :style="styleObject">使用样式对象的形式</p>
+        <p :style="[baseStyle, overridingStyle]">使用数组形式</p>
+        <p :style="foobar">自动添加前缀</p>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                isActive: true,
+                hasError: false,
+                error: null,
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                activeColor: 'blue',
+                fontSize: 20,
+                classObject: {
+                    active: true,
+                    'text-danger': true
+                },
+                styleObject: {
+                    color: 'lime',
+                    fontSize: '30px'
+                },
+                baseStyle: {
+                    color: 'red',
+                    fontSize: '25px'
+                },
+                overridingStyle: {
+                    color: 'blue',
+                    border: '2px solid black'
+                },
+                foobar: {
+                    transform: 'rotate(7deg)'
+                }
+            },
+            computed: {
+                classObject1: function () {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
