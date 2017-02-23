@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>events</title>
+  <script src="vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <button type="button" @click="counter += 1">增加1</button>
+    <p>这个按钮被点击了 {{ counter }} 次</p>
+  </div>
+  <div id="app-1">
+    <button type="button" @click="greet">Greet</button>
+  </div>
+  <div id="app-2">
+    <button type="button" @click="say('hi')">say hi</button>
+    <button type="button" @click="say('what')">say what</button>
+    <button type="button" @click="warn('can\'t submit', $event)">Submit</button>
+  </div>
+  <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            counter: 0
+        }
+    });
+
+    var app1 = new Vue({
+        el: '#app-1',
+        data: {
+            name: 'Alvin'
+        },
+        // 在 `methods` 对象中定义方法
+        methods: {
+            greet: function (event) {
+                // `this` 在方法里指当前 Vue 实例
+                alert('Hello ' + this.name + '!');
+                // `event` 是原生 DOM 事件
+                alert(event.target.tagName)
+            }
+        }
+    });
+
+    // 也可以用 JavaScript 直接调用方法
+    // app1.greet() // -> 'Hello Vue.js!'
+
+    var app2 = new Vue({
+        el: '#app-2',
+        data: {},
+        methods: {
+            say: function (msg) {
+                alert(msg);
+            },
+            warn: function (msg, event) {
+                // 现在我们可以访问原生事件对象
+                if (event) console.log(event.target);
+                alert(msg);
+            }
+        }
+    });
+  </script>
+</body>
+</html>
