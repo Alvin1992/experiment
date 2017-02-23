@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>conditional</title>
+  <script src="vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1 v-if="ok">This is a headline</h1>
+    <h1 v-else>headline me too!</h1>
+  </div>
+
+  <div id="app-1">
+    <p v-if="type === 'A'">A is visible</p>
+    <p v-else-if="type === 'B'">B is visible</p>
+    <p v-else-if="type === 'C'">C is visible</p>
+    <p v-else>All letter is not visible</p>
+  </div>
+
+  <div id="app-2">
+    <p v-show="dis">Hello Alvin</p>
+  </div>
+
+  <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            ok: false
+        }
+    });
+
+    var app1 = new Vue({
+        el: '#app-1',
+        data: {
+            type: 'C'
+        }
+    });
+
+    var app2 = new Vue({
+        el: '#app-2',
+        data: {
+            dis: true
+        }
+    });
+  </script>
+</body>
+</html>
