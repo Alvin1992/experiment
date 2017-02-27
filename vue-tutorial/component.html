@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>component</title>
+  <script src="vue.js"></script>
+</head>
+<body>
+  <div id="app1">
+    <div class="parent">
+      <child>
+        <template scope="props">
+          <span>hello from parent</span>
+          <span>{{ props.text }}</span>
+        </template>
+      </child>
+    </div>
+  </div>
+
+  <div id="app2">
+    <component :is="currentView"></component>
+  </div>
+  <script>
+    Vue.component('child', {
+        template: '<div class="child"> <slot text="hello from child"></slot></div>'
+    });
+    var a1pp = new Vue({
+        el: '#app1',
+        data: {}
+    });
+    var a2pp = new Vue({
+        el: '#app2',
+        data: {
+            currentView: 'home'
+        },
+        components: {
+            home: {
+                template: '<div>这是一个div</div>'
+            },
+            posts: {
+                template: '<p>这是一个p</p>'
+            }
+        }
+    });
+  </script>
+</body>
+</html>
