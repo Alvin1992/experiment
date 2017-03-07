@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reactivity system</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>a is: {{ a }}</p>
+        <p>b is: {{ b }}</p>
+        <p>c is: {{ c }}</p>
+    </div>
+    <div id="app-1"></div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                a: 1,
+                b: 2
+            }
+        });
+        app.c = 5; // 非响应式
+
+        // Vue 不允许动态添加根级响应式属性，必须在初始化实例前声明根级响应式属性，哪怕只是一个空值
+        var vm = new Vue({
+            el: '#app-1',
+            data: {
+                message: ''
+            },
+            template: '<div>{{ message }}</div>'
+        });
+        vm.message = 10;
+    </script>
+</body>
+</html>
