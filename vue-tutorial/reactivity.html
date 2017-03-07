@@ -12,6 +12,11 @@
         <p>c is: {{ c }}</p>
     </div>
     <div id="app-1"></div>
+    <div id="async">{{ message }}</div>
+    <div id="async-child">
+        <p>{{ parent }}</p>
+        <child-component></child-component>
+    </div>
     <script>
         var app = new Vue({
             el: '#app',
@@ -31,6 +36,50 @@
             template: '<div>{{ message }}</div>'
         });
         vm.message = 10;
+
+        var app1 = new Vue({
+            el: '#async',
+            data: {
+                message: 'Hello Alvin'
+            }
+        });
+        app1.message = 'Hello World';  // 组件不会立即重新渲染
+        console.log(app1.$el.textContent === 'Hello World');  // false
+        // 在数据变化之后立即使用 Vue.nextTick(callback)
+        // 这样回调函数在 DOM 更新完成后就会调用
+        // 此处使用的是全局的 Vue 并且方法是 nextTick
+        Vue.nextTick(function () {
+            // 内部要使用这个实例化的对象 app1
+            console.log(app1.$el.textContent === 'Hello World');  // true
+        });
+
+
+        Vue.component('child-component', {
+            data: function () {
+                return {
+                    message: 'not updated'
+                }
+            },
+            template: '<span @click="updateMessage">{{ message }}</span>',
+            methods: {
+                updateMessage: function () {
+                    this.message = 'updated';
+                    console.log(this.$el.textContent);
+                    // 使用的方法是 $nextTick
+                    this.$nextTick(function () {
+                        // 此处 this 是当前的实例
+                        console.log(this.$el.textContent);
+                    });
+                }
+            }
+        });
+
+        var app2 = new Vue({
+            el: '#async-child',
+            data: {
+                parent: 'This message comes from parent.'
+            }
+        });
     </script>
 </body>
 </html>
