@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>transitions</title>
+    <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
+    <style>
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+        }
+        .fade-enter, .fade-leave-active {
+            opacity: 0;
+        }
+        .alvin-fade-enter, .alvin-fade-leave-active {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+        .alvin-fade-enter-active {
+            transition: all .3s ease;
+        }
+        .alvin-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+        .alvin-bounce-enter-active {
+            animation: bounce-in .5s;
+        }
+        .alvin-bounce-leave-active {
+            animation: bounce-out .5s;
+        }
+        @keyframes bounce-in {
+            0% {transform: scale(0)}
+            50% {transform: scale(1.5)}
+            100% {transform: scale(1)}
+        }
+        @keyframes bounce-out {
+            0% {transform: scale(1)}
+            50% {transform: scale(1.5)}
+            100% {transform: scale(0)}
+        }
+        .component-fade-enter-active, .component-fade-leave-active {
+            transition: opacity .3s ease;
+        }
+        .component-fade-enter, .component-fade-leave-active {
+            opacity: 0;
+        }
+    </style>
+    <script src="vue.js"></script>
+</head>
+<body>
+
+    <!-- CSS 过渡 -->
+    <!-- 下列情形中，可以给任何元素和组件添加 entering/leaving 过渡 -->
+    <!--条件渲染 （使用 v-if）-->
+    <!--条件展示 （使用 v-show）-->
+    <!--动态组件-->
+    <!--组件根节点-->
+    <div id="app">
+        <button @click="show = !show">toggle</button>
+        <transition name="fade">
+            <p v-if="show">hello Alvin</p>
+        </transition>
+    </div>
+
+    <div id="app-1">
+        <button @click="show = !show">toggle render</button>
+        <transition name="alvin-fade">
+            <p v-if="show">Hello Alvin</p>
+        </transition>
+    </div>
+
+    <!-- CSS 动画 -->
+    <!-- 动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除 -->
+    <div id="app-2">
+        <button @click="show = !show">toggle render with animation</button>
+        <transition name="alvin-bounce">
+            <p v-if="show">Hello World</p>
+        </transition>
+    </div>
+
+    <!-- 自定义过渡类名，配合第三方 CSS 动画库使用 -->
+    <div id="app-3">
+        <button @click="show = !show">toggle render with Animate.css</button>
+        <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight">
+            <p v-if="show">Hello World</p>
+        </transition>
+    </div>
+    <!-- 同时使用 transition 和 animation -->
+    <!-- 使用 type 特性并设置 animation 或 transition 来明确声明你需要 Vue 监听的类型 -->
+
+
+    <!-- JavaScript 钩子 -->
+    <!-- 当只用 JavaScript 过渡的时候， 在 enter 和 leave 中，回调函数 done 是必须的 -->
+    <!-- 否则，它们会被同步调用，过渡会立即完成 -->
+    <!-- 对于仅使用 JavaScript 过渡的元素添加 v-bind:css="false" -->
+    <!-- Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响 -->
+    <div id="app-4">
+        <button @click="show = !show">toggle render with Velocity.js</button>
+        <transition @before-enter="beforeEnter" @enter="enter" @leave="leave" :css="false">
+            <p v-if="show">Hello World</p>
+        </transition>
+    </div>
+
+    <!-- 过渡模式 mode="" -->
+    <!-- in-out: 新元素先进行过渡，完成之后当前元素过渡离开。 -->
+    <!-- out-in: 当前元素先进行过渡，完成之后新元素过渡进入。 -->
+
+    <!-- 多个组件过渡，使用动态组件 -->
+    <div id="app-5">
+        <label><input type="radio" name="component" v-model="view" value="v-a">A</label>
+        <label><input type="radio" name="component" v-model="view" value="v-b">B</label>
+        <transition name="component-fade" mode="out-in">
+            <component :is="view"></component>
+        </transition>
+    </div>
+
+    <!-- 列表过渡， 使用 <transition-group> -->
+    <!-- 不同于 <transition>， 它会以一个真实元素呈现：默认为一个 <span>。可以通过 tag 特性更换为其他元素 -->
+    <!-- 元素一定需要指定唯一的 key 特性值 -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                show: true
+            }
+        });
+        var app1 = new Vue({
+            el: '#app-1',
+            data: {
+                show: true
+            }
+        });
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                show: true
+            }
+        });
+        var app3 = new Vue({
+            el: '#app-3',
+            data: {
+                show: true
+            }
+        });
+        var app4 = new Vue({
+            el: '#app-4',
+            data: {
+                show: false
+            },
+            methods: {
+                beforeEnter: function (el) {
+                    el.style.opacity = 0;
+                    el.style.transformOrigin = 'left';
+                },
+                enter: function (el, done) {
+                    Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 });
+                    Velocity(el, { fontSize: '1em' }, { complete: done });
+                },
+                leave: function (el, done) {
+                    Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 });
+                    Velocity(el, { rotateZ: '100deg' }, { loop: 2 });
+                    Velocity(el, {
+                        rotateZ: '45deg',
+                        translateY: '30px',
+                        translateX: '30px',
+                        opacity: 0
+                    }, { complete: done });
+                }
+            }
+        });
+        var app5 = new Vue({
+            el: '#app-5',
+            data: {
+                view: 'v-a'
+            },
+            components: {
+                'v-a': {
+                    template: '<div>Component A</div>'
+                },
+                'v-b': {
+                    template: '<div>Component B</div>'
+                }
+            }
+        });
+    </script>
+</body>
+</html>
