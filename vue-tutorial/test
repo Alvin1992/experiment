@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This is a test file for crack</title>
+</head>
+<body>
+    <div class="foo">
+        Hello Alvin
+    </div>
+</body>
+</html>
