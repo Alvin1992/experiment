@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mixins</title>
+    <script src="http://cdn.bootcss.com/vue/2.2.1/vue.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <component></component>
+    </div>
+    <div id="app-1"></div>
+    <script>
+        // 以组件使用混合对象时，所有混合对象的选项将被混入该组件本身的选项
+        // 定义一个混合对象
+        var myMixin = {
+            created: function () {
+                this.hello();
+            },
+            methods: {
+                hello: function () {
+                    console.log('Hello from mixin');
+                }
+            }
+        };
+        // 定义一个使用混合对象的组件
+        var Component = Vue.extend({
+            mixins: [myMixin]
+        });
+        var component = new Component();
+        var app = new Vue({
+            el: '#app'
+        });
+
+        // 选项合并
+        // Vue.extend() 也使用同样的策略进行合并
+        // 同名钩子函数将混合为一个数组都将被调用
+        // 混合对象的钩子将在组件自身钩子之前调用
+        var mixin = {
+            created: function () {
+                console.log('混合对象的钩子被调用');
+            }
+        };
+        var app1 = new Vue({
+            el: '#app-1',
+            mixins: [mixin],
+            created: function () {
+                console.log('组件钩子被调用');
+            }
+        });
+        // 值为对象的选项，例如 methods, components 和 directives，将被混合为同一个对象
+        // 两个对象键名冲突时，取组件对象的键值对
+        var mixinConflict = {
+            methods: {
+                foo: function () {
+                    console.log('foo');
+                },
+                conflicting: function () {
+                    console.log('from mixin');
+                }
+            }
+        };
+        var app2 = new Vue({
+            mixins: [mixinConflict],
+            methods: {
+                bar: function () {
+                    console.log('bar');
+                },
+                conflicting: function () {
+                    console.log('from self');
+                }
+            }
+        });
+        app2.foo();
+        app2.bar();
+        app2.conflicting();
+
+        // 自定义选项将使用默认策略，即简单地覆盖已有值
+        // 如果想让自定义选项以自定义逻辑混合，可以向 Vue.config.optionMergeStrategies 添加一个函数
+    </script>
+</body>
+</html>
