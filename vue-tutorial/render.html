@@ -113,6 +113,41 @@
                 }
             })
         }*/
+        // 对于 .capture 和 .once事件修饰符, Vue 提供了相应的前缀可以用于 on
+        // .capture	!
+        // .once	~
+        // .capture.once or .once.capture	~!
+        /*on: {
+            '!click': this.doThisInCapturingMode,
+                '~keyup': this.doThisOnce,
+                `~!mouseover`: this.doThisOnceInCapturingMode
+        }*/
+
+        // 从 this.$slots 获取 VNodes 列表中的静态内容
+
+        // 将 h 作为 createElement 的别名是 Vue 生态系统中的一个通用惯例，实际上也是 JSX 所要求的，
+        // 如果在作用域中 h 失去作用， 在应用中会触发报错。
+
+        // 函数化组件
+        // 标记组件为 functional，它是无状态（没有 data），无实例（没有 this 上下文）的
+        /*Vue.component('my-component', {
+            functional: true,
+            // 为了弥补缺少的实例
+            // 提供第二个参数作为上下文
+            render: function (createElement, context) {
+                // ...
+            },
+            // Props 可选
+            props: {
+                // ...
+            }
+        })*/
+        // 组件需要的一切都是通过上下文传递，包括：
+        // props: 提供props 的对象
+        // children: VNode 子节点的数组
+        // slots: slots 对象
+        // data: 传递给组件的 data 对象
+        // parent: 对父组件的引用
     </script>
 </body>
 </html>
